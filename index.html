@@ -460,24 +460,29 @@
         </a>
       </div>
     </div>
-    <form class="contact-form" id="contact-form">
+    <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <!-- Replace YOUR_ACCESS_KEY_HERE with the key from web3forms.com -->
+      <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+      <input type="hidden" name="subject" value="New Portfolio Contact: Shafiq Ahamed" />
+      <input type="hidden" name="from_name" value="Portfolio Contact Form" />
+      <input type="hidden" name="redirect" value="false" />
       <div class="form-row">
         <div class="form-group">
           <label for="cf-name">Name</label>
-          <input type="text" id="cf-name" placeholder="Your Name" required />
+          <input type="text" id="cf-name" name="name" placeholder="Your Name" required />
         </div>
         <div class="form-group">
           <label for="cf-email">Email</label>
-          <input type="email" id="cf-email" placeholder="your@email.com" required />
+          <input type="email" id="cf-email" name="email" placeholder="your@email.com" required />
         </div>
       </div>
       <div class="form-group">
         <label for="cf-subject">Subject</label>
-        <input type="text" id="cf-subject" placeholder="Job Opportunity / Project Inquiry" required />
+        <input type="text" id="cf-subject" name="subject_detail" placeholder="Job Opportunity / Project Inquiry" required />
       </div>
       <div class="form-group">
         <label for="cf-message">Message</label>
-        <textarea id="cf-message" placeholder="Tell me about your project or opportunity..." required></textarea>
+        <textarea id="cf-message" name="message" placeholder="Tell me about your project or opportunity..." required></textarea>
       </div>
       <button type="submit" class="form-submit" id="form-submit-btn">
         🚀 Send Message

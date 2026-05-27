@@ -92,17 +92,42 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.hero-stats, .github-stats-grid').forEach(el => counterObserver.observe(el));
 
-// Contact form
-document.getElementById('contact-form').addEventListener('submit', function(e) {
+// Contact form — real submission via Web3Forms
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = this.querySelector('.form-submit');
-  btn.textContent = '✅ Message Sent!';
-  btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-  setTimeout(() => {
-    btn.textContent = '🚀 Send Message';
-    btn.style.background = '';
-    this.reset();
-  }, 3000);
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '⏳ Sending...';
+  btn.disabled = true;
+
+  const formData = new FormData(this);
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (data.success) {
+      btn.innerHTML = '✅ Message Sent! I\'ll reply soon.';
+      btn.style.background = '#16a34a';
+      this.reset();
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch {
+    btn.innerHTML = '❌ Failed. Email me directly!';
+    btn.style.background = '#dc2626';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  }
 });
 
 // Reveal all sections on load
