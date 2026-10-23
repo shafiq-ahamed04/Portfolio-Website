@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BootSequence } from "./components/BootSequence";
 import { CustomCursor } from "./components/CustomCursor";
 import { Navbar } from "./components/Navbar";
@@ -14,46 +11,14 @@ import { JourneySection } from "./components/JourneySection";
 import { GitHubSection } from "./components/GitHubSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
-
-gsap.registerPlugin(ScrollTrigger);
+import { StickyScrollspy } from "./components/StickyScrollspy";
 
 export function App() {
   const [bootCompleted, setBootCompleted] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Initialize Lenis Smooth Scroll
-  useEffect(() => {
-    // Check prefers-reduced-motion
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-    });
-
-    lenis.on("scroll", (e: any) => {
-      ScrollTrigger.update();
-    });
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
-    };
-  }, []);
-
-  // Track scroll progress and active section
+  // Standard Native Scrolling with lightweight listener for test progress meter & scrollspy
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -64,7 +29,7 @@ export function App() {
 
       // Detect active section
       const sections = ["home", "about", "skills", "projects", "test-run", "journey", "github", "contact"];
-      const scrollPos = window.scrollY + 200;
+      const scrollPos = window.scrollY + 220;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -95,7 +60,10 @@ export function App() {
       {/* Main Navigation */}
       <Navbar activeSection={activeSection} scrollProgress={scrollProgress} />
 
-      {/* Sections Architecture */}
+      {/* Sticky Side-Navigation (Scrollspy) */}
+      <StickyScrollspy />
+
+      {/* Sections Architecture with Standard Native Scroll-Triggered Reveals */}
       <main>
         <Hero />
         <AboutSection />
