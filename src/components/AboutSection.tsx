@@ -1,12 +1,44 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { portfolioData } from "../content";
 import { SectionHeader } from "./SectionHeader";
 import { BugEasterEgg } from "./BugEasterEgg";
-import { GraduationCap, MapPin, CheckCircle, Flame, ShieldAlert, Award } from "lucide-react";
+import { SpotlightCard } from "./SpotlightCard";
+import { GraduationCap, MapPin, CheckCircle, ShieldCheck, Terminal, Cpu } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const AboutSection: React.FC = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const cards = sectionRef.current.querySelectorAll(".about-scroll-item");
+    gsap.fromTo(
+      cards,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+        },
+      }
+    );
+  }, []);
+
   return (
-    <section id="about" className="py-24 bg-[#0A0A0B] border-t border-[#18191D] relative">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="py-24 bg-[#0A0A0B] border-t border-[#18191D] relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <SectionHeader
@@ -22,9 +54,9 @@ export const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Main Story & Philosophy */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="p-8 rounded-xl bg-[#121316] border border-[#23242A] relative overflow-hidden">
+            <SpotlightCard className="about-scroll-item p-8 bg-[#121316] border border-[#23242A]">
               <div className="font-mono text-xs text-[#B6FF3C] mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#B6FF3C]" />
+                <span className="w-2 h-2 rounded-full bg-[#B6FF3C] animate-pulse" />
                 QA AUTOMATION SPECIALIZATION
               </div>
 
@@ -54,19 +86,22 @@ export const AboutSection: React.FC = () => {
                   <span>M.I.E.T Engineering College</span>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* Test Case Attributes Breakdown */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="p-6 rounded-xl bg-[#121316] border border-[#23242A]">
+            <SpotlightCard className="about-scroll-item p-6 bg-[#121316] border border-[#23242A]">
               <div className="font-mono text-xs text-[#9E9B95] uppercase mb-4 flex items-center justify-between">
                 <span>TEST PARAMETERS</span>
-                <span className="text-[#B6FF3C]">PASS</span>
+                <span className="text-[#B6FF3C] flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>PASS</span>
+                </span>
               </div>
 
               <div className="space-y-3 font-mono text-xs">
-                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3">
+                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
                   <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
                   <div>
                     <div className="text-[#F2EFE8] font-bold">100+ Automated Tests Executed</div>
@@ -74,34 +109,34 @@ export const AboutSection: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3">
+                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
                   <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
                   <div>
-                    <div className="text-[#F2EFE8] font-bold">Pytest & Selenium Mastery</div>
+                    <div className="text-[#F2EFE8] font-bold">Pytest &amp; Selenium Mastery</div>
                     <div className="text-[#9E9B95] text-[11px] mt-0.5">Custom fixtures, parameterization, explicit waits</div>
                   </div>
                 </div>
 
-                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3">
+                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
                   <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
                   <div>
                     <div className="text-[#F2EFE8] font-bold">Rigorous Defect Documentation</div>
-                    <div className="text-[#9E9B95] text-[11px] mt-0.5">Clear reproduction steps, screenshots & logs in Jira</div>
+                    <div className="text-[#9E9B95] text-[11px] mt-0.5">Clear reproduction steps, screenshots &amp; logs in Jira</div>
                   </div>
                 </div>
 
-                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3">
+                <div className="p-3 rounded bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
                   <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
                   <div>
                     <div className="text-[#F2EFE8] font-bold">API Test Validation</div>
-                    <div className="text-[#9E9B95] text-[11px] mt-0.5">Status codes, response latencies & payload schemas</div>
+                    <div className="text-[#9E9B95] text-[11px] mt-0.5">Status codes, response latencies &amp; payload schemas</div>
                   </div>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Quick QA Statement Card */}
-            <div className="p-5 rounded-xl bg-gradient-to-r from-[#18191D] to-[#121316] border border-[#23242A] flex items-center justify-between">
+            <div className="about-scroll-item p-5 rounded-xl bg-gradient-to-r from-[#18191D] to-[#121316] border border-[#23242A] flex items-center justify-between">
               <div>
                 <div className="font-mono text-xs text-[#9E9B95]">CURRENT AVAILABILITY</div>
                 <div className="font-display font-bold text-base text-[#F2EFE8] mt-1">
@@ -110,7 +145,7 @@ export const AboutSection: React.FC = () => {
               </div>
               <a
                 href="#contact"
-                className="px-3.5 py-2 rounded bg-[#B6FF3C] text-[#0A0A0B] font-mono text-xs font-bold hover:bg-[#9DE024] transition-colors"
+                className="px-3.5 py-2 rounded bg-[#B6FF3C] text-[#0A0A0B] font-mono text-xs font-bold hover:bg-[#9DE024] hover:shadow-[0_0_16px_rgba(182,255,60,0.4)] transition-all"
               >
                 Connect
               </a>

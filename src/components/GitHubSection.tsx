@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { portfolioData } from "../content";
 import { SectionHeader } from "./SectionHeader";
-import { Github, Star, GitFork, ExternalLink, Pin, Terminal, CheckCircle2, RefreshCw } from "lucide-react";
+import { SpotlightCard } from "./SpotlightCard";
+import { Github, ExternalLink, Pin, Terminal } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface RepoItem {
   name: string;
@@ -43,13 +48,11 @@ const STATIC_FALLBACK_REPOS: RepoItem[] = [
 export const GitHubSection: React.FC = () => {
   const [repos, setRepos] = useState<RepoItem[]>(STATIC_FALLBACK_REPOS);
   const [publicRepoCount, setPublicRepoCount] = useState<number>(9);
-  const [loading, setLoading] = useState<boolean>(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const fetchGitHub = async () => {
       try {
-        setLoading(true);
-        // Fetch user metadata
         const userRes = await fetch("https://api.github.com/users/shafiq-ahamed04");
         if (userRes.ok) {
           const userData = await userRes.json();
@@ -58,12 +61,10 @@ export const GitHubSection: React.FC = () => {
           }
         }
 
-        // Fetch repos
         const reposRes = await fetch("https://api.github.com/users/shafiq-ahamed04/repos?sort=updated&per_page=12");
         if (reposRes.ok) {
           const reposData = await reposRes.json();
           if (Array.isArray(reposData) && reposData.length > 0) {
-            // Pin QA-Engineer_journey to first position
             const sorted = [...reposData].sort((a, b) => {
               if (a.name === "QA-Engineer_journey") return -1;
               if (b.name === "QA-Engineer_journey") return 1;
@@ -73,17 +74,39 @@ export const GitHubSection: React.FC = () => {
           }
         }
       } catch {
-        // Safe static fallback used silently
-      } finally {
-        setLoading(false);
+        // Fallback used silently
       }
     };
 
     fetchGitHub();
   }, []);
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const cards = sectionRef.current.querySelectorAll(".github-reveal-card");
+    gsap.fromTo(
+      cards,
+      { y: 35, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
+      }
+    );
+  }, []);
+
   return (
-    <section id="github" className="py-24 bg-[#0A0A0B] border-t border-[#18191D] relative">
+    <section
+      ref={sectionRef}
+      id="github"
+      className="py-24 bg-[#0A0A0B] border-t border-[#18191D] relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           testCaseId="TC-06"
@@ -93,41 +116,41 @@ export const GitHubSection: React.FC = () => {
 
         {/* Telemetry Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <div className="p-5 rounded-xl bg-[#121316] border border-[#23242A]">
+          <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">PUBLIC REPOSITORIES</div>
             <div className="text-3xl font-display font-extrabold text-[#F2EFE8] mt-2">
               {publicRepoCount}
             </div>
             <div className="text-[11px] font-mono text-[#B6FF3C] mt-1">Verified on GitHub</div>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-5 rounded-xl bg-[#121316] border border-[#23242A]">
+          <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">AUTOMATED TESTS</div>
             <div className="text-3xl font-display font-extrabold text-[#B6FF3C] mt-2">
               100+
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Python · Selenium · Pytest</div>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-5 rounded-xl bg-[#121316] border border-[#23242A]">
+          <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">QA SPRINT COMMITMENT</div>
             <div className="text-3xl font-display font-extrabold text-[#F2EFE8] mt-2">
               90 Days
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Structured QA Curriculum</div>
-          </div>
+          </SpotlightCard>
 
-          <div className="p-5 rounded-xl bg-[#121316] border border-[#23242A]">
+          <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">DAILY DISCIPLINE</div>
             <div className="text-3xl font-display font-extrabold text-[#B6FF3C] mt-2">
               100%
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Discipline over motivation</div>
-          </div>
+          </SpotlightCard>
         </div>
 
-        {/* Custom Contribution-Style Heat Strip (No 3rd-party widget) */}
-        <div className="mb-12 p-6 rounded-xl bg-[#121316] border border-[#23242A]">
+        {/* Custom Contribution-Style Heat Strip */}
+        <SpotlightCard className="github-reveal-card mb-12 p-6 bg-[#121316] border border-[#23242A]">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4 font-mono text-xs">
             <span className="text-[#F2EFE8] font-bold flex items-center gap-2">
               <Terminal className="w-4 h-4 text-[#B6FF3C]" />
@@ -146,18 +169,17 @@ export const GitHubSection: React.FC = () => {
           {/* Grid of contribution squares */}
           <div className="grid grid-cols-12 sm:grid-cols-24 md:grid-cols-32 gap-1.5 overflow-x-auto py-2">
             {Array.from({ length: 64 }).map((_, idx) => {
-              // Simulated continuous streak pattern based on user's real daily sprint
               const intensity = idx % 7 === 0 ? "bg-[#B6FF3C]" : idx % 3 === 0 ? "bg-[#B6FF3C]/70" : idx % 2 === 0 ? "bg-[#B6FF3C]/35" : "bg-[#18191D]";
               return (
                 <div
                   key={idx}
-                  className={`w-3.5 h-3.5 rounded-[2px] ${intensity} transition-colors hover:scale-125 cursor-pointer`}
+                  className={`w-3.5 h-3.5 rounded-[2px] ${intensity} transition-transform hover:scale-125 cursor-pointer`}
                   title={`Day ${idx + 1}: Active automated test commits`}
                 />
               );
             })}
           </div>
-        </div>
+        </SpotlightCard>
 
         {/* Pinned and Recent Repositories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -165,13 +187,9 @@ export const GitHubSection: React.FC = () => {
             const isPinned = repo.name === "QA-Engineer_journey";
 
             return (
-              <a
+              <SpotlightCard
                 key={idx}
-                href={repo.html_url}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor-label="REPO"
-                className={`p-6 rounded-xl border transition-all flex flex-col justify-between group ${
+                className={`github-reveal-card p-6 border transition-all flex flex-col justify-between group ${
                   isPinned
                     ? "bg-[#16181D] border-[#B6FF3C]/60 shadow-[0_0_20px_rgba(182,255,60,0.15)]"
                     : "bg-[#121316] border-[#23242A] hover:border-[#F2EFE8]/40"
@@ -204,11 +222,16 @@ export const GitHubSection: React.FC = () => {
                     <span className="w-2 h-2 rounded-full bg-[#B6FF3C]" />
                     <span>{repo.language || "Python"}</span>
                   </span>
-                  <span className="text-[#B6FF3C] font-semibold group-hover:underline">
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[#B6FF3C] font-semibold hover:underline"
+                  >
                     View on GitHub →
-                  </span>
+                  </a>
                 </div>
-              </a>
+              </SpotlightCard>
             );
           })}
         </div>
@@ -220,7 +243,7 @@ export const GitHubSection: React.FC = () => {
             target="_blank"
             rel="noreferrer"
             data-cursor-label="PROFILE"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#18191D] border border-[#23242A] hover:border-[#B6FF3C] text-[#F2EFE8] hover:text-[#B6FF3C] font-mono text-xs font-semibold transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#18191D] border border-[#23242A] hover:border-[#B6FF3C] text-[#F2EFE8] hover:text-[#B6FF3C] font-mono text-xs font-semibold transition-all hover:shadow-[0_0_16px_rgba(182,255,60,0.3)]"
           >
             <Github className="w-4 h-4 text-[#B6FF3C]" />
             <span>Visit @shafiq-ahamed04 GitHub Profile</span>
