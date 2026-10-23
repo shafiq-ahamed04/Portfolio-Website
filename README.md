@@ -1,80 +1,110 @@
 # Shafiq Ahamed — QA Automation Engineer Portfolio
 
+<div align="center">
+
+[![Portfolio Live](https://img.shields.io/badge/LIVE_PORTFOLIO-shafiq--ahamed04.vercel.app-B6FF3C?style=for-the-badge&logo=vercel&logoColor=0A0A0B)](https://shafiq-ahamed04.vercel.app/)
+[![Automated Smoke Tests](https://img.shields.io/badge/SMOKE_TESTS-5%2F5%20PASSED-B6FF3C?style=for-the-badge&logo=pytest&logoColor=0A0A0B)](tests/)
+[![Python](https://img.shields.io/badge/PYTHON-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Selenium](https://img.shields.io/badge/SELENIUM-WEBDRIVER-43B02A?style=for-the-badge&logo=selenium&logoColor=white)](https://selenium.dev)
+[![Pytest](https://img.shields.io/badge/PYTEST-9.1.1-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](https://pytest.org)
+
+</div>
+
 > **"I break software so users never have to."**  
-> Automated test suites, defect triage, and regression testing in Python, Selenium WebDriver, and Pytest.
+> High-performance adversarial QA Automation Engineer portfolio built with React, TypeScript, Tailwind CSS, Three.js WebGL, and GSAP. Backed by an automated end-to-end Pytest & Selenium WebDriver smoke test suite.
 
 ---
 
 ## 🧪 Architecture & Concept: "The Portfolio is a Test Run"
 
-- **Boot Sequence:** Pytest-style terminal typing out test cases (`collected 7 items ... PASSED`) with an under-2.5s glitch-cut into the hero (skippable, executed once per session).
-- **Test Case Navigation:** Every section represents a test case (`[TC-01 About]` through `[TC-07 Contact]`), dynamically flipping status from `RUNNING` to `PASSED` as sections enter view.
-- **Scroll Test Progress Bar:** Real-time test progress tracking with live `% PASSED` readout.
-- **Visual System:** `#0A0A0B` deep base, bone text `#F2EFE8`, acid green accent `#B6FF3C` ("passed"), with red `#FF4D4D` for defect moments.
-- **Interactive WebGL:** Three.js code-rain/particle field reacting to cursor physics with low-power and reduced-motion fallbacks.
-- **Decoy Easter Egg:** Tasteful `[BUG FOUND]` flash button that triggers a QA defect resolution modal.
+The portfolio is architected as an active software test execution pipeline:
 
----
-
-## 🚀 Getting Started
-
-### 1. Install Dependencies
-```bash
-npm install
-```
-
-### 2. Run Local Development Server
-```bash
-npm run dev
-```
-
-### 3. Build & Preview
-```bash
-npm run build
-npm run preview
-```
+- **Dual-Stage Opening:**
+  1. *Stage 1 (Pytest Terminal):* Real-time terminal output streaming through all 7 test cases (`tests/test_about.py` through `tests/test_contact.py`).
+  2. *Stage 2 (Photo Title Card):* Framed portrait of Shafiq in a glowing acid-green rim, monumental Syne typography, verification badges, and an interactive loading countdown with instant keyboard/click skip.
+- **QA Crosshair Locator Cursor:** Custom desktop cursor equipped with calibration ticks (`+`), live viewport coordinate readout `[X, Y]`, and dynamic DOM element inspector badges (`[EXECUTE]`, `[NAVIGATE]`, `[DEFECT?]`).
+- **Global Neon Scroll Progress Bar:** Laser-head tracking at the very top of the viewport with a live floating `SUITE RUN: %` test execution readout.
+- **Keynote Scroll-Scrubbed Story:** Body copy dynamically illuminates from 35% ghost opacity to radiant bone-white `#F2EFE8` as you scroll past.
+- **Automated Test Gallery:** Interactive exhibition deck with slide navigation (`EXHIBIT 01 OF 04`), filmstrip quick-jump selectors, and expandable accordion scroll anchors.
+- **Live Test Playback:** Video slot running actual Chrome headless test execution (`public/assets/test-run.mp4`) with play-on-scroll and live console stream.
+- **Adversarial Defect Easter Egg:** `[BUG FOUND: 0xDEADBEEF]` button that triggers a simulated defect triage modal.
 
 ---
 
 ## 🔬 Automated Pytest & Selenium Smoke Tests
 
-A dedicated automated QA test suite is included under `tests/` covering end-to-end site reliability:
-- `test_01_page_loads_and_title`: Asserts exact title tag and branding presence.
-- `test_02_nav_anchors_work`: Verifies all 7 test case nav links and DOM target anchors.
-- `test_03_resume_download_link`: Confirms `/resume.pdf` download target and filename attribute.
-- `test_04_contact_form_validation`: Verifies form field constraints and input handling.
-- `test_05_no_fatal_console_errors`: Inspects browser performance and console logs for zero severe JavaScript errors.
+This portfolio tests itself. Located under `tests/`, 5 automated Selenium WebDriver test cases run headlessly in Google Chrome:
 
-### Running Smoke Tests:
-Ensure the preview or dev server is running on `http://localhost:4173`:
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.11.3, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Portfolio-Shafiq ahamed S
+collected 5 items
+
+tests/test_portfolio_smoke.py::TestPortfolioSmoke::test_01_page_loads_and_title PASSED [ 20%]
+tests/test_portfolio_smoke.py::TestPortfolioSmoke::test_02_nav_anchors_work PASSED [ 40%]
+tests/test_portfolio_smoke.py::TestPortfolioSmoke::test_03_resume_download_link PASSED [ 60%]
+tests/test_portfolio_smoke.py::TestPortfolioSmoke::test_04_contact_form_validation PASSED [ 80%]
+tests/test_portfolio_smoke.py::TestPortfolioSmoke::test_05_no_fatal_console_errors PASSED [100%]
+
+============================= 5 passed in 14.74s ==============================
+```
+
+### Running the Smoke Tests Locally:
+
 ```bash
-# In one terminal:
-npm run preview
+# Terminal 1: Launch preview server
+npm run build
+npx vite preview --port 4173
 
-# In a second terminal:
+# Terminal 2: Run pytest automation suite
 pytest -v tests/
 ```
 
 ---
 
-## 📌 Remaining TODOs
+## 🚀 Local Development Setup
 
-1. **API Testing Suite Repository Link:**
-   - Tagged as `[TODO: repo link]` on Project 2 card. Update `githubUrl` in `src/content.ts` once the public repository is pushed.
-2. **Screen Recording:**
-   - Active screen recording from `C:\Users\shafi\Videos\Screen Recordings\Screen Recording 2026-10-23 093737.mp4` has been linked into `public/assets/test-run.mp4`. To swap with a new video, place the file in `public/assets/test-run.mp4`.
+### 1. Clone & Install Dependencies
+```bash
+git clone https://github.com/shafiq-ahamed04/Portfolio-Website.git
+cd Portfolio-Website
+npm install
+```
+
+### 2. Run Development Server
+```bash
+npm run dev
+```
+
+### 3. Build for Production
+```bash
+npm run build
+```
 
 ---
 
-## 📊 Summary of Changes vs Old Site
+## 📊 Summary of Architectural Evolution
 
-| Feature | Old Site | Redesigned QA Portfolio |
-|---|---|---|
-| **Positioning** | "Aspiring DevOps Engineer & Full Stack Developer" | **QA Automation Engineer** (Python · Selenium · Pytest · API Testing) |
+| Dimension | Initial Baseline | Redesigned QA Test Engine |
+| :--- | :--- | :--- |
+| **Positioning** | "Aspiring DevOps & Full Stack Developer" | **Adversarial QA Automation Engineer** (Python, Selenium, Pytest) |
 | **Experience / Claims** | DevOps, Docker, AWS, Linux, CI/CD, Full Stack | **QA ONLY**. 100% verified facts, zero invented metrics, B.Tech IT 2026 |
-| **Concept** | Generic portfolio template | **"The Portfolio is a Test Run"** (Pytest boot, TC-01..TC-07 badges) |
-| **Visuals & Hero** | Static avatar & orbit circles | **High-contrast duotone cut-out, 3D mouse tilt, Three.js WebGL code-particles, text scramble** |
-| **Projects** | Generic MERN cards + dead ATCRS demo link | **Bug-Report cards (ID, Summary, Stack, Result), dead link removed, active test screenshots** |
-| **Test Run** | None | **Live video slot with custom controls, play-on-scroll & interactive Pytest terminal console** |
-| **GitHub Section** | Third-party Heroku widgets & stats | **Direct GitHub API integration, pinned QA journey, custom heat strip** |
-| **Testing** | None | **5 Selenium + Pytest automated smoke tests in `/tests`** |
+| **Opening Sequence** | Static page load | **Dual-Stage Opening**: Fast Pytest stream + Cinematic Photo Title Card |
+| **Cursor System** | Browser default | **QA Locator Crosshair** with live coordinates and DOM inspector |
+| **Scroll Experience** | Standard scroll | **Neon Laser Scrollbar** + Keynote Text Scrub + Gallery Exhibition Slider |
+| **Projects Showcase** | Generic static cards | **Interactive Test Gallery** with slide deck, filmstrip & accordion anchors |
+| **Video Playback** | None | **Live Chrome Headless Test Playback** (`public/assets/test-run.mp4`) |
+| **Quality Verification**| None | **5 Automated Pytest + Selenium Smoke Tests** (`tests/`) |
+
+---
+
+## 📬 Contact & Recruiter Information
+
+- **Name:** Shafiq Ahamed
+- **Role:** QA Automation Engineer (Fresher, B.Tech IT 2026)
+- **College:** M.I.E.T. Engineering College, Anna University
+- **Portfolio:** [shafiq-ahamed04.vercel.app](https://shafiq-ahamed04.vercel.app/)
+- **LinkedIn:** [linkedin.com/in/shafiq-ahamed-s](https://www.linkedin.com/in/shafiq-ahamed-s)
+- **GitHub:** [github.com/shafiq-ahamed04](https://github.com/shafiq-ahamed04)
+- **Email:** [shafiqahamedshajahan@gmail.com](mailto:shafiqahamedshajahan@gmail.com)
