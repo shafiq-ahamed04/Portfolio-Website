@@ -137,6 +137,20 @@ export const Hero: React.FC = () => {
       {/* Background radial glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#B6FF3C]/5 blur-[140px] pointer-events-none rounded-full" />
 
+      {/* Floating QA Code Tokens in 3D Space */}
+      <div className="absolute top-28 left-8 sm:left-16 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#121316]/70 border border-[#23242A] text-[11px] font-mono text-[#9E9B95] backdrop-blur-sm animate-float-slow pointer-events-none select-none">
+        <span className="text-[#B6FF3C]">@pytest.mark.regression</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-[#B6FF3C]" />
+      </div>
+
+      <div className="absolute bottom-32 left-12 hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#121316]/70 border border-[#23242A] text-[11px] font-mono text-[#9E9B95] backdrop-blur-sm animate-float-medium pointer-events-none select-none">
+        <span className="text-yellow-400">WebDriverWait(driver, 10)</span>
+      </div>
+
+      <div className="absolute top-36 right-16 hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#121316]/70 border border-[#23242A] text-[11px] font-mono text-[#9E9B95] backdrop-blur-sm animate-float-slow pointer-events-none select-none">
+        <span className="text-[#B6FF3C]">assert response.status_code == 200</span>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Positioning & Headlines */}

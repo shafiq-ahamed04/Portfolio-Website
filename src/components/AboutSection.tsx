@@ -121,44 +121,50 @@ export const AboutSection: React.FC = () => {
 
           {/* Test Case Attributes Breakdown */}
           <div className="lg:col-span-5 w-full space-y-4">
-            <SpotlightCard className="observer-reveal opacity-0 translate-y-8 transition-all duration-700 ease-out delay-150 p-6 sm:p-7 bg-[#121316] border border-[#23242A] rounded-2xl">
+            <SpotlightCard className="observer-reveal opacity-0 translate-y-8 transition-all duration-700 ease-out delay-150 p-6 sm:p-7 bg-[#121316] border border-[#23242A] hover:border-[#B6FF3C]/40 rounded-2xl relative overflow-hidden group">
+              {/* Subtle sweeping diagnostic scanline */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#B6FF3C]/5 to-transparent h-12 w-full animate-radar-sweep pointer-events-none" />
+
               <div className="font-mono text-xs text-[#9E9B95] uppercase mb-4 flex items-center justify-between">
-                <span>TEST PARAMETERS VERIFIED</span>
+                <span className="flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-[#B6FF3C]" />
+                  <span>TEST PARAMETERS VERIFIED</span>
+                </span>
                 <span className="text-[#B6FF3C] flex items-center gap-1 font-bold">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  <span>PASS</span>
+                  <CheckCircle className="w-3.5 h-3.5 animate-pulse" />
+                  <span>PASS [100%]</span>
                 </span>
               </div>
 
               <div className="space-y-3 font-mono text-xs">
-                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/60 hover:bg-[#1C1E24] hover:translate-x-1 transition-all group/item">
+                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
                   <div>
-                    <div className="text-[#F2EFE8] font-bold">100+ Automated Tests Executed</div>
+                    <div className="text-[#F2EFE8] font-bold group-hover/item:text-[#B6FF3C] transition-colors">100+ Automated Tests Executed</div>
                     <div className="text-[#9E9B95] text-[11px] mt-0.5">Authentication flows, complex forms, search trees</div>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/60 hover:bg-[#1C1E24] hover:translate-x-1 transition-all group/item">
+                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
                   <div>
-                    <div className="text-[#F2EFE8] font-bold">Pytest &amp; Selenium Locators</div>
+                    <div className="text-[#F2EFE8] font-bold group-hover/item:text-[#B6FF3C] transition-colors">Pytest &amp; Selenium Locators</div>
                     <div className="text-[#9E9B95] text-[11px] mt-0.5">Custom fixtures, parameterization, explicit waits</div>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/60 hover:bg-[#1C1E24] hover:translate-x-1 transition-all group/item">
+                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
                   <div>
-                    <div className="text-[#F2EFE8] font-bold">Rigorous Defect Documentation</div>
+                    <div className="text-[#F2EFE8] font-bold group-hover/item:text-[#B6FF3C] transition-colors">Rigorous Defect Documentation</div>
                     <div className="text-[#9E9B95] text-[11px] mt-0.5">Clear reproduction steps, screenshots &amp; logs in Jira</div>
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/40 transition-colors">
-                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#18191D] border border-[#23242A] flex items-start gap-3 hover:border-[#B6FF3C]/60 hover:bg-[#1C1E24] hover:translate-x-1 transition-all group/item">
+                  <CheckCircle className="w-4 h-4 text-[#B6FF3C] shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
                   <div>
-                    <div className="text-[#F2EFE8] font-bold">API Test Validation</div>
+                    <div className="text-[#F2EFE8] font-bold group-hover/item:text-[#B6FF3C] transition-colors">API Test Validation</div>
                     <div className="text-[#9E9B95] text-[11px] mt-0.5">Status codes, response latencies &amp; payload schemas</div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Terminal, ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
+import { Terminal, ShieldCheck, CheckCircle2, ArrowRight, Sparkles, Cpu } from "lucide-react";
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -17,12 +17,13 @@ const BOOT_LOGS = [
   "tests/test_journey.py::test_discipline_milestones ..... PASSED [ 71%]",
   "tests/test_github.py::test_qa_journey_telemetry ....... PASSED [ 85%]",
   "tests/test_contact.py::test_recruiter_pipeline ........ PASSED [100%]",
-  "==================== 7 passed in 1.42s ====================",
+  "==================== 7 passed in 1.28s ====================",
 ];
 
 export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
   const [stage, setStage] = useState<"TERMINAL" | "TITLE_CARD" | "FINISH">("TERMINAL");
   const [lines, setLines] = useState<string[]>([]);
+  const [progress, setProgress] = useState(0);
   const completedRef = useRef(false);
 
   const finish = () => {
@@ -31,13 +32,14 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
     setStage("FINISH");
     setTimeout(() => {
       onComplete();
-    }, 350);
+    }, 400);
   };
 
+  // Stage 1: Terminal typing
   useEffect(() => {
-    let index = 0;
+    if (stage !== "TERMINAL") return;
 
-    // Terminal typing
+    let index = 0;
     const interval = setInterval(() => {
       if (index < BOOT_LOGS.length) {
         const nextLine = BOOT_LOGS[index];
@@ -45,31 +47,44 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
         index++;
       } else {
         clearInterval(interval);
-        // Transition into Title Card stage with Shafiq's photo
         setTimeout(() => {
           setStage("TITLE_CARD");
-        }, 220);
+        }, 300);
       }
-    }, 85);
+    }, 75);
 
-    // After Title Card shows, auto-finish into Hero
-    let titleCardTimer: NodeJS.Timeout;
-    if (stage === "TITLE_CARD") {
-      titleCardTimer = setTimeout(() => {
+    return () => clearInterval(interval);
+  }, [stage]);
+
+  // Stage 2: Cinematic Title Card progress & timer
+  useEffect(() => {
+    if (stage !== "TITLE_CARD") return;
+
+    const startTime = Date.now();
+    const duration = 2400; // 2.4s presentation time
+
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, Math.round((elapsed / duration) * 100));
+      setProgress(pct);
+
+      if (pct >= 100) {
+        clearInterval(progressInterval);
         finish();
-      }, 1600);
-    }
+      }
+    }, 30);
 
-    // Safety timeout: guarantees completion under 3.5s
+    return () => clearInterval(progressInterval);
+  }, [stage]);
+
+  // Global safety fallback and keyboard skip listeners
+  useEffect(() => {
     const safetyTimer = setTimeout(() => {
-      clearInterval(interval);
       finish();
-    }, 3500);
+    }, 4500);
 
-    // Keyboard listener for instant skip
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
-        clearInterval(interval);
         clearTimeout(safetyTimer);
         finish();
       }
@@ -77,42 +92,47 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      clearInterval(interval);
       clearTimeout(safetyTimer);
-      if (titleCardTimer) clearTimeout(titleCardTimer);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [stage]);
+  }, []);
 
   return (
     <div
       onClick={finish}
-      className={`fixed inset-0 z-[9999] bg-[#0A0A0B] flex flex-col justify-center items-center p-6 cursor-pointer select-none transition-all duration-400 ${
+      className={`fixed inset-0 z-[9999] bg-[#07080A] flex flex-col justify-center items-center p-4 sm:p-6 cursor-pointer select-none transition-all duration-500 ${
         stage === "FINISH" ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
       }`}
       data-testid="boot-sequence"
-      title="Click anywhere to enter"
+      title="Click anywhere to enter portfolio"
     >
+      {/* Background cinematic vignette & glow */}
+      <div className="absolute inset-0 bg-radial from-transparent via-[#0A0A0B]/80 to-[#050506] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#B6FF3C]/5 rounded-full blur-[160px] pointer-events-none" />
+
       {/* STAGE 1: Fast Pytest Terminal */}
       {stage === "TERMINAL" && (
-        <div className="w-full max-w-2xl bg-[#0F1014] border border-[#23242A] rounded-xl p-5 font-mono text-xs sm:text-sm shadow-2xl relative overflow-hidden animate-fadeIn">
+        <div className="w-full max-w-2xl bg-[#0F1014]/95 backdrop-blur-md border border-[#23242A] rounded-xl p-5 sm:p-6 font-mono text-xs sm:text-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] relative overflow-hidden transition-all duration-300">
           {/* Terminal Header */}
           <div className="flex items-center justify-between border-b border-[#23242A] pb-3 mb-4 text-[#9E9B95]">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#FF4D4D]/80 inline-block" />
               <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
               <span className="w-3 h-3 rounded-full bg-[#B6FF3C]/80 inline-block" />
-              <span className="ml-2 text-xs text-[#9E9B95]">pytest --portfolio-check</span>
+              <span className="ml-2 text-xs text-[#9E9B95] flex items-center gap-1.5">
+                <Terminal className="w-3.5 h-3.5 text-[#B6FF3C]" />
+                <span>pytest --portfolio-check</span>
+              </span>
             </div>
             <button
               onClick={finish}
-              className="text-[11px] text-[#B6FF3C] hover:underline uppercase tracking-wider flex items-center gap-1"
+              className="text-[11px] text-[#B6FF3C] hover:underline uppercase tracking-wider flex items-center gap-1 font-mono"
             >
-              [ESC / Click to Skip]
+              [Click or ESC to Skip]
             </button>
           </div>
 
-          {/* Lines */}
+          {/* Terminal Lines Stream */}
           <div className="space-y-1.5 min-h-[220px]">
             {lines.map((line, idx) => {
               const isPass = line.includes("PASSED");
@@ -144,47 +164,72 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
 
       {/* STAGE 2: Cinematic Title Card with Photo */}
       {stage === "TITLE_CARD" && (
-        <div className="w-full max-w-xl bg-[#121316] border border-[#B6FF3C]/50 rounded-2xl p-6 sm:p-8 shadow-[0_0_60px_rgba(182,255,60,0.25)] relative overflow-hidden animate-fadeIn text-center flex flex-col items-center">
-          {/* Background scanline & glow */}
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#B6FF3C]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="w-full max-w-xl bg-[#0F1014]/90 backdrop-blur-xl border border-[#B6FF3C]/40 rounded-3xl p-6 sm:p-10 shadow-[0_0_80px_rgba(182,255,60,0.25)] relative overflow-hidden text-center flex flex-col items-center animate-fadeIn transform transition-all duration-500">
+          {/* Subtle animated scanline */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#B6FF3C]/5 to-transparent h-16 w-full animate-radar-sweep pointer-events-none" />
 
-          {/* Framed Photo with Acid Green Rim Glow */}
-          <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl p-1 bg-gradient-to-b from-[#B6FF3C] via-[#B6FF3C]/40 to-transparent shadow-[0_0_24px_rgba(182,255,60,0.35)] mb-5">
-            <img
-              src="/images/profile.png"
-              alt="Shafiq Ahamed"
-              className="w-full h-full object-cover rounded-xl filter contrast-110"
-            />
-            <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-[#0A0A0B] border-2 border-[#B6FF3C] flex items-center justify-center">
+          {/* Top Verification Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#18191D] border border-[#B6FF3C]/40 text-xs font-mono text-[#B6FF3C] mb-6 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[#B6FF3C] animate-ping" />
+            <span className="tracking-widest uppercase font-bold text-[11px]">ALL TEST SUITES PASSED · 100% READY</span>
+          </div>
+
+          {/* Framed Photo with Glowing Acid Green Rim */}
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-2xl p-1.5 bg-gradient-to-b from-[#B6FF3C] via-[#B6FF3C]/30 to-transparent shadow-[0_0_35px_rgba(182,255,60,0.4)] mb-6 transition-transform duration-700 hover:scale-105">
+            <div className="w-full h-full rounded-xl overflow-hidden bg-[#0A0A0B] relative">
+              <img
+                src="/images/profile.png"
+                alt="Shafiq Ahamed"
+                className="w-full h-full object-cover filter contrast-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/60 via-transparent to-transparent pointer-events-none" />
+            </div>
+
+            {/* Verified Badge Icon */}
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#0A0A0B] border-2 border-[#B6FF3C] flex items-center justify-center shadow-lg">
               <CheckCircle2 className="w-4 h-4 text-[#B6FF3C]" />
             </div>
           </div>
 
-          {/* Name & Title */}
-          <span className="font-mono text-xs text-[#B6FF3C] tracking-widest uppercase mb-1 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#B6FF3C] animate-ping" />
-            <span>TEST SUITE VERIFIED // 100% READY</span>
-          </span>
-
-          <h2 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight text-[#F2EFE8] uppercase leading-none mt-1">
+          {/* Cinematic Title Card Typography */}
+          <h2 className="text-3xl sm:text-5xl font-display font-black tracking-tight text-[#F2EFE8] uppercase leading-none">
             SHAFIQ AHAMED
           </h2>
 
-          <p className="font-mono text-xs sm:text-sm text-[#9E9B95] mt-2 tracking-wider">
-            QA AUTOMATION ENGINEER · PYTHON · SELENIUM · PYTEST
+          <div className="h-0.5 w-16 bg-[#B6FF3C] my-3 rounded-full shadow-[0_0_8px_#B6FF3C]" />
+
+          <p className="font-mono text-xs sm:text-sm text-[#B6FF3C] tracking-widest font-bold uppercase">
+            QA AUTOMATION ENGINEER
           </p>
 
-          <p className="text-xs text-[#E6E4DD] font-sans italic mt-3 max-w-md">
+          <p className="font-mono text-[11px] sm:text-xs text-[#9E9B95] mt-1 tracking-wider">
+            PYTHON · SELENIUM WEBDRIVER · PYTEST · API TESTING
+          </p>
+
+          <p className="text-xs sm:text-sm text-[#E6E4DD] font-sans italic mt-4 max-w-md px-2 leading-relaxed">
             &ldquo;I break software so users never have to.&rdquo;
           </p>
 
-          {/* Click to Enter Prompt */}
-          <div className="mt-6 flex items-center gap-2 font-mono text-xs text-[#B6FF3C] bg-[#18191D] px-4 py-2 rounded-full border border-[#23242A]">
-            <span>INITIALIZING ENVIRONMENT</span>
-            <ArrowRight className="w-3.5 h-3.5 animate-pulse" />
+          {/* Cinematic Progress Bar & Skip Prompt */}
+          <div className="w-full max-w-xs mt-7">
+            <div className="w-full bg-[#18191D] h-1.5 rounded-full overflow-hidden border border-[#23242A]">
+              <div
+                className="bg-[#B6FF3C] h-full transition-all duration-75 shadow-[0_0_10px_#B6FF3C]"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <div className="mt-3 flex items-center justify-between text-[10px] font-mono text-[#9E9B95]">
+              <span className="flex items-center gap-1.5 text-[#B6FF3C]">
+                <Cpu className="w-3 h-3 animate-pulse" />
+                <span>LOADING ENGINE... {progress}%</span>
+              </span>
+              <span className="text-[#9E9B95] hover:text-[#F2EFE8]">[CLICK TO SKIP]</span>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
 };
+

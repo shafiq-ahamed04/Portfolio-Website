@@ -103,14 +103,14 @@ export const SkillsSection: React.FC = () => {
                 {portfolioData.skillsTiers.handsOn.map((skill, idx) => (
                   <SpotlightCard
                     key={idx}
-                    className="skill-card-item p-5 bg-[#121316] border border-[#23242A] hover:border-[#B6FF3C]/60 flex flex-col justify-between group"
+                    className="skill-card-item p-5 bg-[#121316] border border-[#23242A] hover:border-[#B6FF3C]/60 hover:-translate-y-1.5 hover:shadow-[0_0_25px_rgba(182,255,60,0.15)] flex flex-col justify-between group transition-all duration-300"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-[10px] font-mono uppercase tracking-wider text-[#9E9B95] px-2 py-0.5 rounded bg-[#18191D] border border-[#23242A]">
                           {skill.category}
                         </span>
-                        <span className="w-2 h-2 rounded-full bg-[#B6FF3C] group-hover:scale-125 transition-transform" />
+                        <span className="w-2 h-2 rounded-full bg-[#B6FF3C] group-hover:scale-150 group-hover:shadow-[0_0_8px_#B6FF3C] transition-all" />
                       </div>
                       <h4 className="text-lg font-display font-bold text-[#F2EFE8] group-hover:text-[#B6FF3C] transition-colors">
                         {skill.name}
@@ -123,7 +123,7 @@ export const SkillsSection: React.FC = () => {
                     <div className="mt-4 pt-3 border-t border-[#23242A] flex items-center justify-between font-mono text-[11px]">
                       <span className="text-[#9E9B95]">STATUS</span>
                       <span className="text-[#B6FF3C] font-semibold flex items-center gap-1">
-                        <Check className="w-3 h-3" /> VERIFIED
+                        <Check className="w-3 h-3 group-hover:scale-125 transition-transform" /> VERIFIED
                       </span>
                     </div>
                   </SpotlightCard>

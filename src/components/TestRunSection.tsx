@@ -86,9 +86,8 @@ export const TestRunSection: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Video Slot with Radar Scanner & Custom Controls */}
-          <div className="lg:col-span-7">
+          <div ref={containerRef} className="lg:col-span-7">
             <SpotlightCard
-              ref={containerRef}
               className="relative rounded-2xl bg-[#121316] border border-[#23242A] overflow-hidden group shadow-2xl"
             >
               {/* Radar Scanner Line */}
