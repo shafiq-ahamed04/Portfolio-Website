@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -22,45 +22,63 @@ const BOOT_LOGS = [
 export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
   const [lines, setLines] = useState<string[]>([]);
   const [isGlitching, setIsGlitching] = useState(false);
+  const completedRef = useRef(false);
+
+  const finish = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setIsGlitching(true);
+    setTimeout(() => {
+      onComplete();
+    }, 280);
+  };
 
   useEffect(() => {
-    // If already executed this session, finish immediately
-    if (sessionStorage.getItem("qa_boot_executed") === "true") {
-      onComplete();
-      return;
-    }
+    let index = 0;
 
-    let currentLine = 0;
+    // Line typing timer
     const interval = setInterval(() => {
-      if (currentLine < BOOT_LOGS.length) {
-        setLines((prev) => [...prev, BOOT_LOGS[currentLine]]);
-        currentLine++;
+      if (index < BOOT_LOGS.length) {
+        const nextLine = BOOT_LOGS[index];
+        setLines((prev) => [...prev, nextLine]);
+        index++;
       } else {
         clearInterval(interval);
-        // Start glitch cut
-        setIsGlitching(true);
-        setTimeout(() => {
-          sessionStorage.setItem("qa_boot_executed", "true");
-          onComplete();
-        }, 320);
+        finish();
       }
-    }, 120);
+    }, 110);
 
-    return () => clearInterval(interval);
-  }, [onComplete]);
+    // Guaranteed safety timeout (never gets stuck on refresh or slow browsers)
+    const safetyTimer = setTimeout(() => {
+      clearInterval(interval);
+      finish();
+    }, 2600);
 
-  const handleSkip = () => {
-    sessionStorage.setItem("qa_boot_executed", "true");
-    onComplete();
-  };
+    // Keyboard listener for instant skip (Escape, Space, Enter)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
+        clearInterval(interval);
+        clearTimeout(safetyTimer);
+        finish();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(safetyTimer);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div
-      onClick={handleSkip}
+      onClick={finish}
       className={`fixed inset-0 z-[9999] bg-[#0A0A0B] flex flex-col justify-center items-center p-6 cursor-pointer select-none transition-opacity duration-300 ${
         isGlitching ? "opacity-0 scale-105 filter invert" : "opacity-100"
       }`}
       data-testid="boot-sequence"
+      title="Click anywhere to skip"
     >
       <div className="w-full max-w-2xl bg-[#0F1014] border border-[#23242A] rounded-lg p-5 font-mono text-xs sm:text-sm shadow-2xl relative overflow-hidden">
         {/* Terminal Header */}
@@ -72,7 +90,7 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
             <span className="ml-2 text-xs text-[#9E9B95]">pytest --portfolio-check</span>
           </div>
           <button
-            onClick={handleSkip}
+            onClick={finish}
             className="text-[11px] text-[#B6FF3C] hover:underline uppercase tracking-wider flex items-center gap-1"
           >
             [ESC / Click to Skip]
