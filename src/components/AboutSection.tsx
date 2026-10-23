@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -47,24 +48,26 @@ export const AboutSection: React.FC = () => {
       }
     );
 
-    // Stagger reveal for story paragraphs
+    // Scroll-driven text highlight scrub: lines smoothly illuminate as you scroll past them
     if (storyCardRef.current) {
       const paragraphs = storyCardRef.current.querySelectorAll(".story-paragraph");
-      gsap.fromTo(
-        paragraphs,
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: storyCardRef.current,
-            start: "top 80%",
-          },
-        }
-      );
+      paragraphs.forEach((p) => {
+        gsap.fromTo(
+          p,
+          { opacity: 0.35, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: p,
+              start: "top 88%",
+              end: "top 62%",
+              scrub: true,
+            },
+          }
+        );
+      });
     }
   }, []);
 
@@ -186,15 +189,21 @@ export const AboutSection: React.FC = () => {
             {/* Quick Metrics Bar Under Story */}
             <div ref={metricsRef} className="grid grid-cols-3 gap-3">
               <div className="p-4 rounded-xl bg-[#121316] border border-[#23242A] text-center hover:border-[#B6FF3C]/50 transition-all hover:-translate-y-1">
-                <div className="text-2xl font-display font-extrabold text-[#B6FF3C]">100+</div>
+                <div className="text-2xl font-display font-extrabold text-[#B6FF3C]">
+                  <AnimatedCounter target={100} suffix="+" />
+                </div>
                 <div className="text-[11px] font-mono text-[#F2EFE8] mt-0.5">Automated Tests</div>
               </div>
               <div className="p-4 rounded-xl bg-[#121316] border border-[#23242A] text-center hover:border-[#B6FF3C]/50 transition-all hover:-translate-y-1">
-                <div className="text-2xl font-display font-extrabold text-[#F2EFE8]">0</div>
+                <div className="text-2xl font-display font-extrabold text-[#F2EFE8]">
+                  <AnimatedCounter target={0} />
+                </div>
                 <div className="text-[11px] font-mono text-[#F2EFE8] mt-0.5">Flaky Tolerance</div>
               </div>
               <div className="p-4 rounded-xl bg-[#121316] border border-[#23242A] text-center hover:border-[#B6FF3C]/50 transition-all hover:-translate-y-1">
-                <div className="text-2xl font-display font-extrabold text-[#B6FF3C]">100%</div>
+                <div className="text-2xl font-display font-extrabold text-[#B6FF3C]">
+                  <AnimatedCounter target={100} suffix="%" />
+                </div>
                 <div className="text-[11px] font-mono text-[#F2EFE8] mt-0.5">Pytest Verified</div>
               </div>
             </div>

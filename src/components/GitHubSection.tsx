@@ -5,6 +5,7 @@ import { SpotlightCard } from "./SpotlightCard";
 import { Github, ExternalLink, Pin, Terminal } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -119,7 +120,7 @@ export const GitHubSection: React.FC = () => {
           <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">PUBLIC REPOSITORIES</div>
             <div className="text-3xl font-display font-extrabold text-[#F2EFE8] mt-2">
-              {publicRepoCount}
+              <AnimatedCounter target={publicRepoCount} />
             </div>
             <div className="text-[11px] font-mono text-[#B6FF3C] mt-1">Verified on GitHub</div>
           </SpotlightCard>
@@ -127,7 +128,7 @@ export const GitHubSection: React.FC = () => {
           <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">AUTOMATED TESTS</div>
             <div className="text-3xl font-display font-extrabold text-[#B6FF3C] mt-2">
-              100+
+              <AnimatedCounter target={100} suffix="+" />
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Python · Selenium · Pytest</div>
           </SpotlightCard>
@@ -135,7 +136,7 @@ export const GitHubSection: React.FC = () => {
           <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">QA SPRINT COMMITMENT</div>
             <div className="text-3xl font-display font-extrabold text-[#F2EFE8] mt-2">
-              90 Days
+              <AnimatedCounter target={90} suffix=" Days" />
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Structured QA Curriculum</div>
           </SpotlightCard>
@@ -143,7 +144,7 @@ export const GitHubSection: React.FC = () => {
           <SpotlightCard className="github-reveal-card p-5 bg-[#121316] border border-[#23242A]">
             <div className="text-xs font-mono text-[#9E9B95]">DAILY DISCIPLINE</div>
             <div className="text-3xl font-display font-extrabold text-[#B6FF3C] mt-2">
-              100%
+              <AnimatedCounter target={100} suffix="%" />
             </div>
             <div className="text-[11px] font-mono text-[#9E9B95] mt-1">Discipline over motivation</div>
           </SpotlightCard>

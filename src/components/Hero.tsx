@@ -3,6 +3,7 @@ import { portfolioData } from "../content";
 import { HeroCanvas } from "./HeroCanvas";
 import { Download, CheckCircle2, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 export const Hero: React.FC = () => {
   const [displayText, setDisplayText] = useState("");
@@ -269,7 +270,7 @@ export const Hero: React.FC = () => {
             <div className="hero-fade-in pt-4 flex items-center gap-6 border-t border-[#23242A]/80 w-full max-w-lg">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full border-2 border-[#B6FF3C] flex items-center justify-center font-mono font-bold text-sm text-[#B6FF3C] shadow-[0_0_12px_rgba(182,255,60,0.2)]">
-                  100+
+                  <AnimatedCounter target={100} suffix="+" />
                 </div>
                 <div>
                   <div className="text-xs font-mono font-bold tracking-wider text-[#F2EFE8]">

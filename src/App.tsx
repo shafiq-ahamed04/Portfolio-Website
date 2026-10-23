@@ -12,6 +12,7 @@ import { GitHubSection } from "./components/GitHubSection";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { StickyScrollspy } from "./components/StickyScrollspy";
+import { ScrollProgressBar } from "./components/ScrollProgressBar";
 
 export function App() {
   const [bootCompleted, setBootCompleted] = useState(false);
@@ -51,6 +52,9 @@ export function App() {
 
       {/* Custom Cursor System */}
       <CustomCursor />
+
+      {/* Global Scroll Progress Bar with Suite Execution Tracker */}
+      <ScrollProgressBar />
 
       {/* Boot Sequence Modal */}
       {!bootCompleted && (
