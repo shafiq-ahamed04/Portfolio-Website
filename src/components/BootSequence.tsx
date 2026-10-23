@@ -180,9 +180,8 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
               <img
                 src="/images/profile.png"
                 alt="Shafiq Ahamed"
-                className="w-full h-full object-cover filter contrast-110"
+                className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B]/60 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Verified Badge Icon */}

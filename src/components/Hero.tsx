@@ -322,15 +322,14 @@ export const Hero: React.FC = () => {
                 <img
                   src="/images/profile.png"
                   alt="Shafiq Ahamed - QA Automation Engineer"
-                  className="w-full h-full object-cover object-center filter contrast-110 saturate-[0.85] transition-all duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-105"
                   onError={(e) => {
                     e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80";
                   }}
                 />
 
-                {/* Duotone acid green overlay layer */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-transparent to-transparent opacity-85" />
-                <div className="absolute inset-0 mix-blend-color opacity-25 bg-[#B6FF3C]" />
+                {/* Subtle bottom edge gradient for micro-badge readability only */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A0A0B]/80 via-[#0A0A0B]/30 to-transparent pointer-events-none" />
 
                 {/* Floating Micro-Badge */}
                 <div className="absolute bottom-4 left-4 right-4 bg-[#121316]/90 backdrop-blur-md border border-[#23242A] rounded-lg p-3 flex items-center justify-between font-mono">
