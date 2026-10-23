@@ -18,15 +18,15 @@ export default {
         borderHighlight: "rgba(182, 255, 60, 0.35)",
       },
       fontFamily: {
-        sans: ["'Plus Jakarta Sans'", "Inter", "sans-serif"],
-        display: ["Outfit", "sans-serif"],
-        mono: ["'JetBrains Mono'", "monospace"],
+        display: ["Syne", "sans-serif"],
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["'Fira Code'", "monospace"],
       },
       animation: {
         marquee: "marquee 28s linear infinite",
         "marquee-reverse": "marquee-reverse 28s linear infinite",
         pulseGlow: "pulseGlow 2.5s ease-in-out infinite",
-        glitch: "glitch 1s infinite alternate",
+        fadeIn: "fadeIn 0.3s ease-out forwards",
       },
       keyframes: {
         marquee: {
@@ -40,6 +40,10 @@ export default {
         pulseGlow: {
           "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
           "50%": { opacity: "0.85", transform: "scale(1.05)" },
+        },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },
