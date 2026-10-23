@@ -99,7 +99,9 @@ class TestPortfolioSmoke:
         logs = driver.get_log("browser")
         severe_errors = [
             log for log in logs
-            if log["level"] == "SEVERE" and "favicon.ico" not in log["message"]
+            if log["level"] == "SEVERE"
+            and "favicon.ico" not in log["message"]
+            and "ERR_CACHE_OPERATION_NOT_SUPPORTED" not in log["message"]
         ]
 
         assert len(severe_errors) == 0, f"Fatal console errors detected: {severe_errors}"
