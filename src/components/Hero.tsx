@@ -5,19 +5,46 @@ import { Download, CheckCircle2, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 
 export const Hero: React.FC = () => {
-  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [typingSpeed, setTypingSpeed] = useState(70);
+
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const portraitRef = useRef<HTMLDivElement | null>(null);
   const nameContainerRef = useRef<HTMLHeadingElement | null>(null);
   const heroContentRef = useRef<HTMLDivElement | null>(null);
 
-  // Rotating roles
+  // Smooth terminal typewriter for QA roles
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % portfolioData.personal.rolesRotating.length);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
+    const roles = portfolioData.personal.rolesRotating;
+    const currentRole = roles[loopNum % roles.length];
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        // Typing forward
+        setDisplayText(currentRole.substring(0, displayText.length + 1));
+        setTypingSpeed(65);
+
+        if (displayText.length + 1 === currentRole.length) {
+          // Pause at full word before deleting
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        // Deleting backward
+        setDisplayText(currentRole.substring(0, displayText.length - 1));
+        setTypingSpeed(32);
+
+        if (displayText.length === 0) {
+          setIsDeleting(false);
+          setLoopNum((prev) => prev + 1);
+          setTypingSpeed(220); // Pause before next role
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, loopNum, typingSpeed]);
 
   // GSAP Entrance Stagger for Name & Content
   useEffect(() => {
@@ -125,7 +152,7 @@ export const Hero: React.FC = () => {
             <div className="relative select-none">
               <h1
                 ref={nameContainerRef}
-                className="text-5xl sm:text-7xl xl:text-8xl font-display font-black tracking-tighter text-[#F2EFE8] leading-[0.95] flex flex-wrap gap-x-4 sm:gap-x-6"
+                className="text-5xl sm:text-7xl xl:text-8xl font-display font-extrabold tracking-tight text-[#F2EFE8] leading-[0.95] flex flex-wrap gap-x-4 sm:gap-x-6"
               >
                 {/* Word 1: SHAFIQ */}
                 <span className="inline-flex overflow-hidden py-1">
@@ -162,13 +189,17 @@ export const Hero: React.FC = () => {
               </p>
             </div>
 
-            {/* Rotating Role Line */}
-            <div className="hero-fade-in h-9 flex items-center font-mono text-lg sm:text-2xl text-[#B6FF3C] font-semibold">
-              <span className="text-[#9E9B95] mr-2 text-sm sm:text-base">$ role --target:</span>
-              <span className="transition-all duration-300">
-                {portfolioData.personal.rolesRotating[roleIndex]}
+            {/* Rotating Role Line with Perfect Baseline Alignment & Zero Layout Shift */}
+            <div className="hero-fade-in min-h-[2.8rem] sm:min-h-[3.2rem] flex flex-wrap items-baseline gap-x-3 font-mono text-lg sm:text-2xl font-bold py-1">
+              <span className="text-[#9E9B95] text-xs sm:text-sm tracking-wider uppercase font-semibold select-none flex items-center gap-1.5 shrink-0 self-center">
+                <span className="text-[#B6FF3C] font-mono">$</span>
+                <span>role --target:</span>
               </span>
-              <span className="w-2.5 h-5 bg-[#B6FF3C] ml-1.5 animate-pulse inline-block" />
+
+              <span className="text-[#B6FF3C] tracking-tight relative inline-flex items-baseline min-w-[12ch]">
+                <span className="border-b-2 border-transparent">{displayText}</span>
+                <span className="inline-block w-2.5 h-4 sm:h-5 bg-[#B6FF3C] ml-1.5 animate-pulse align-middle" />
+              </span>
             </div>
 
             {/* Core Hero Tagline */}
@@ -253,7 +284,7 @@ export const Hero: React.FC = () => {
           {/* Right Column: Stylish Duotone Portrait with Layers */}
           <div className="lg:col-span-5 flex justify-center relative">
             {/* Giant outlined background text behind portrait */}
-            <div className="absolute -top-12 -left-6 select-none pointer-events-none opacity-10 font-display font-black text-7xl sm:text-8xl text-transparent [-webkit-text-stroke:2px_#F2EFE8] whitespace-nowrap z-0">
+            <div className="absolute -top-12 -left-6 select-none pointer-events-none opacity-10 font-display font-extrabold text-7xl sm:text-8xl text-transparent [-webkit-text-stroke:2px_#F2EFE8] whitespace-nowrap z-0">
               SHAFIQ
             </div>
 
