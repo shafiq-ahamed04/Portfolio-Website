@@ -19,7 +19,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/shafiq-ahamed04/shafiq-ahamed04/main/assets/pytest-terminal-run.svg" alt="Active Automated Pytest Suite Execution" width="100%"/>
+<img src="https://raw.githubusercontent.com/shafiq-ahamed04/shafiq-ahamed04/main/assets/pytest-terminal-run.gif" alt="Active Automated Pytest Suite Execution" width="100%"/>
 
 </div>
 
