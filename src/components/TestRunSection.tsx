@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { portfolioData } from "../content";
 import { SectionHeader } from "./SectionHeader";
-import { Play, Pause, Volume2, VolumeX, Maximize2, Terminal, RefreshCw, CheckCircle2 } from "lucide-react";
+import { SpotlightCard } from "./SpotlightCard";
+import { Play, Pause, Volume2, VolumeX, Maximize2, Terminal, RefreshCw, CheckCircle2, Activity, Radio } from "lucide-react";
 
 export const TestRunSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -17,9 +18,7 @@ export const TestRunSection: React.FC = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && videoRef.current) {
-          videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {
-            // Autoplay may be restricted by browser until user gesture
-          });
+          videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
         } else if (videoRef.current) {
           videoRef.current.pause();
           setIsPlaying(false);
@@ -35,7 +34,6 @@ export const TestRunSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Update progress bar
   const handleTimeUpdate = () => {
     if (!videoRef.current) return;
     const current = videoRef.current.currentTime;
@@ -69,17 +67,16 @@ export const TestRunSection: React.FC = () => {
     }
   };
 
-  // Live terminal stream simulation for 100+ tests
   useEffect(() => {
     if (!terminalActive) return;
     const interval = setInterval(() => {
       setTerminalIndex((prev) => (prev + 1) % portfolioData.sampleTerminalOutput.length);
-    }, 1200);
+    }, 1100);
     return () => clearInterval(interval);
   }, [terminalActive]);
 
   return (
-    <section id="test-run" className="py-24 bg-[#0A0A0B] border-t border-[#18191D] relative">
+    <section id="test-run" className="py-20 sm:py-28 bg-[#0A0A0B] border-t border-[#18191D] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           testCaseId="TC-04"
@@ -88,19 +85,15 @@ export const TestRunSection: React.FC = () => {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Video Slot with Custom Controls */}
+          {/* Main Video Slot with Radar Scanner & Custom Controls */}
           <div className="lg:col-span-7">
-            {/* 
-              ============================================================
-              TODO: User test run screen recording file goes here:
-              assets/test-run.mp4
-              (Copied from: C:\Users\shafi\Videos\Screen Recordings\Screen Recording 2026-10-23 093737.mp4)
-              ============================================================ 
-            */}
-            <div
+            <SpotlightCard
               ref={containerRef}
               className="relative rounded-2xl bg-[#121316] border border-[#23242A] overflow-hidden group shadow-2xl"
             >
+              {/* Radar Scanner Line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#B6FF3C] to-transparent z-30 animate-pulse pointer-events-none opacity-80" />
+
               {/* Terminal Window Top Bar */}
               <div className="bg-[#18191D] px-4 py-3 flex items-center justify-between border-b border-[#23242A] font-mono text-xs text-[#9E9B95]">
                 <div className="flex items-center gap-2">
@@ -110,13 +103,13 @@ export const TestRunSection: React.FC = () => {
                   <span className="ml-2 text-[#F2EFE8] font-bold">Selenium_Pytest_Run.mp4</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#B6FF3C] animate-pulse" />
-                  <span className="text-[#B6FF3C] text-[11px] font-semibold">100+ AUTOMATED TESTS</span>
+                  <Radio className="w-3.5 h-3.5 text-[#B6FF3C] animate-pulse" />
+                  <span className="text-[#B6FF3C] text-[11px] font-bold">100+ AUTOMATED TESTS</span>
                 </div>
               </div>
 
               {/* Video Element */}
-              <div className="relative aspect-video bg-black flex items-center justify-center">
+              <div className="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
                 <video
                   ref={videoRef}
                   src="/assets/test-run.mp4"
@@ -128,7 +121,7 @@ export const TestRunSection: React.FC = () => {
                   className="w-full h-full object-contain"
                 />
 
-                {/* Big center play button overlay when paused */}
+                {/* Big Center Play Button Overlay When Paused */}
                 {!isPlaying && (
                   <button
                     onClick={togglePlay}
@@ -182,21 +175,21 @@ export const TestRunSection: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
 
-          {/* Right: Live Interactive Terminal Readout */}
+          {/* Right: Live Interactive Terminal Readout with Signal Activity */}
           <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-[#0F1014] border border-[#23242A] p-5 font-mono text-xs flex flex-col justify-between h-full min-h-[420px]">
+            <SpotlightCard className="rounded-2xl bg-[#0F1014] border border-[#23242A] p-5 font-mono text-xs flex flex-col justify-between h-full min-h-[420px]">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-[#23242A] mb-4 text-[#9E9B95]">
                   <div className="flex items-center gap-2">
-                    <Terminal className="w-4 h-4 text-[#B6FF3C]" />
+                    <Activity className="w-4 h-4 text-[#B6FF3C] animate-pulse" />
                     <span className="text-white font-bold text-xs">pytest console output</span>
                   </div>
                   <button
                     onClick={() => setTerminalIndex(0)}
-                    className="p-1 hover:text-[#B6FF3C] text-[11px] flex items-center gap-1"
+                    className="p-1 hover:text-[#B6FF3C] text-[11px] flex items-center gap-1 transition-colors"
                     title="Rerun console animation"
                   >
                     <RefreshCw className="w-3 h-3" />
@@ -204,7 +197,7 @@ export const TestRunSection: React.FC = () => {
                   </button>
                 </div>
 
-                <div className="space-y-2 scanlines p-2 rounded bg-black/40 border border-[#18191D]">
+                <div className="space-y-2 scanlines p-3 rounded-xl bg-black/50 border border-[#18191D]">
                   {portfolioData.sampleTerminalOutput.slice(0, terminalIndex + 1).map((item, idx) => (
                     <div
                       key={idx}
@@ -228,13 +221,13 @@ export const TestRunSection: React.FC = () => {
 
               {/* Status footer inside terminal */}
               <div className="pt-4 border-t border-[#23242A] mt-4 flex items-center justify-between text-[11px] text-[#9E9B95]">
-                <span className="flex items-center gap-1.5 text-[#B6FF3C]">
+                <span className="flex items-center gap-1.5 text-[#B6FF3C] font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Suite Passed (0 Flaky)</span>
                 </span>
                 <span>Assert count: 100+</span>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </div>
